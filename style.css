@@ -1,0 +1,216 @@
+/* FONTES */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
+
+/* ================================================================= */
+/* DEFINIÇÃO DOS TEMAS USANDO VARIÁVEIS CSS                          */
+/* ================================================================= */
+
+/* TEMA 1: Vento Suave (Padrão) */
+:root {
+    --bg-color: #F4F7F5;
+    --grid-bg-color: #FFFFFF;
+    --display-bg-color: #E8EDEB;
+    --btn-bg-color: #E8EDEB;
+    --btn-hover-bg-color: #DDE5E2;
+    --operator-bg-color: #D1E8E2;
+    --operator-hover-bg-color: #BBDED6;
+    --text-color: #525252;
+    --display-text-color: #333333;
+    --placeholder-opacity: 0.5;
+    --grid-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+    --btn-shadow: none;
+    --btn-active-shadow: none;
+    --grid-border: none;
+    --body-gradient: var(--bg-color);
+}
+
+/* TEMA 2: Argila Clara (Neumorfismo) */
+body[data-theme="neumorphic"] {
+    --bg-color: #eef2f5;
+    --grid-bg-color: var(--bg-color);
+    --display-text-color: #4B5A67;
+    --operator-bg-color: var(--bg-color);
+    --btn-bg-color: var(--bg-color);
+    --text-color: #6D7F8D;
+    --operator-color: #5E81AC;
+    --shadow-dark: #A6B4C1;
+    --shadow-light: #FFFFFF;
+    --grid-shadow: none;
+    --btn-shadow: -5px -5px 10px var(--shadow-light), 5px 5px 10px var(--shadow-dark);
+    --btn-active-shadow: inset -5px -5px 10px var(--shadow-light), inset 5px 5px 10px var(--shadow-dark);
+}
+body[data-theme="neumorphic"] button[data-operator],
+body[data-theme="neumorphic"] button[data-equals] {
+    color: var(--operator-color);
+}
+body[data-theme="neumorphic"] .output {
+    box-shadow: var(--btn-active-shadow);
+}
+
+
+/* TEMA 3: Aurora Boreal (Glassmorphism) */
+body[data-theme="aurora"] {
+    --body-gradient: linear-gradient(45deg, #6B73FF, #9A84FF);
+    --grid-bg-color: rgba(255, 255, 255, 0.1);
+    --display-bg-color: rgba(0, 0, 0, 0.2);
+    --btn-bg-color: rgba(255, 255, 255, 0.15);
+    --btn-hover-bg-color: rgba(255, 255, 255, 0.25);
+    --operator-bg-color: rgba(255, 255, 255, 0.3);
+    --operator-hover-bg-color: rgba(255, 255, 255, 0.4);
+    --text-color: #FFFFFF;
+    --display-text-color: #FFFFFF;
+    --placeholder-opacity: 0.7;
+    --grid-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+    --grid-border: 1px solid rgba(255, 255, 255, 0.2);
+    --btn-shadow: none;
+    --btn-active-shadow: none;
+}
+body[data-theme="aurora"] {
+    backdrop-filter: blur(10px);
+}
+
+
+/* ================================================================= */
+/* ESTILOS BASE (Usam as variáveis definidas acima)                  */
+/* ================================================================= */
+*, *::before, *::after {
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    padding: 20px;
+    margin: 0;
+    background: var(--body-gradient, var(--bg-color));
+    display: flex;
+    flex-direction: column; /* Para empilhar o seletor e a calculadora */
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    transition: background-color 0.3s ease;
+}
+
+.calculator-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 90px);
+    grid-template-rows: minmax(120px, auto) repeat(5, 90px);
+    background-color: var(--grid-bg-color);
+    border-radius: 24px;
+    padding: 20px;
+    box-shadow: var(--grid-shadow);
+    border: var(--grid-border);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.calculator-grid > button {
+    cursor: pointer;
+    font-size: 1.8rem;
+    font-weight: 500;
+    border: none;
+    outline: none;
+    background-color: var(--btn-bg-color);
+    color: var(--text-color);
+    margin: 8px;
+    border-radius: 16px;
+    box-shadow: var(--btn-shadow);
+    transition: all .15s ease-in-out;
+}
+
+.calculator-grid > button:hover {
+    background-color: var(--btn-hover-bg-color);
+}
+
+.calculator-grid > button:active {
+    transform: scale(0.96);
+    box-shadow: var(--btn-active-shadow);
+}
+
+.span-two {
+    grid-column: span 2;
+}
+
+button[data-operator], button[data-equals] {
+    background-color: var(--operator-bg-color);
+}
+
+button[data-operator]:hover, button[data-equals]:hover {
+    background-color: var(--operator-hover-bg-color);
+}
+
+.output {
+    grid-column: 1 / -1;
+    background-color: var(--display-bg-color);
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    flex-direction: column;
+    padding: 20px;
+    word-wrap: break-word;
+    word-break: break-all;
+    border-radius: 16px;
+    margin: 8px;
+    margin-bottom: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.previous-operand {
+    color: var(--text-color);
+    opacity: 0.8;
+    font-size: 1.5rem;
+    height: 30px;
+}
+
+.current-operand {
+    color: var(--display-text-color);
+    font-size: 2.5rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.output-char {
+    transition: opacity 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.output-char.placeholder {
+    opacity: var(--placeholder-opacity);
+}
+
+/* --- ESTILOS PARA O NOVO SELETOR DE TEMA --- */
+.theme-switcher {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+    background-color: rgba(0,0,0,0.1);
+    padding: 5px;
+    border-radius: 20px;
+}
+
+.theme-switcher button {
+    border: none;
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin: 0 5px;
+    font-size: 1rem;
+    transition: background-color 0.2s ease;
+}
+
+.theme-switcher button:hover {
+    background-color: rgba(0,0,0,0.2);
+}
+
+body[data-theme="light"] .theme-switcher,
+body[data-theme="neumorphic"] .theme-switcher {
+     background-color: #E8EDEB;
+}
+body[data-theme="light"] .theme-switcher button,
+body[data-theme="neumorphic"] .theme-switcher button {
+    color: #525252;
+}
+body[data-theme="light"] .theme-switcher button:hover,
+body[data-theme="neumorphic"] .theme-switcher button:hover {
+    background-color: #DDE5E2;
+}
